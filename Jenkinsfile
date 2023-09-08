@@ -1,26 +1,25 @@
-pipeline {
+pipeline{
     agent any
-    environment {
-        DOCKER_HUB_USERNAME = credentials('DockerHubCredentials').username
-        DOCKER_HUB_PASSWORD = credentials('DockerHubCredentials').password
-    }
-    stages {
-        stage('Git clone') {
-            steps {
+    stages{
+        stage('Git clone'){
+            steps{
                 git 'https://github.com/udaykg19/HelloWorld-Springboot-App.git'
             }
         }
-        stage('Maven build') {
-            steps {
+        
+        stage('maven build'){
+            steps{
                 sh 'mvn package'
             }
         }
-        stage('Create Docker image') {
-            steps {
+        stage('Create Dockerimage'){
+            steps{
                 sh 'docker build -t udaykg:latest .'
-                sh "docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD"
-                sh 'docker push udaykg:latest'
+                 sh 'docker login -u ${DockerHubCredentials.username} -p ${DockerHubCredentials.password}'
+                sh 'docker push udaykg'
+                
             }
         }
+        
     }
 }
