@@ -15,6 +15,9 @@ pipeline{
         stage('Create Dockerimage'){
             steps{
                 sh 'docker build -t udaykg:latest .'
+                 sh 'docker login -u ${DockerHubCredentials.username} -p ${DockerHubCredentials.password}'
+                sh 'docker push ${udaykg}'
+                
             }
         }
         
